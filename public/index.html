@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Task - API Testing UI</title>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Task - API Testing UI</title>
+    <style>
+        /* Modern Color Palette & Variables */
+        :root { 
+            --primary: #4f46e5; 
+            --primary-hover: #4338ca;
+            --secondary: #64748b;
+            --secondary-hover: #475569;
+            --bg: #f3f4f6; 
+            --surface: #ffffff;
+            --text-main: #111827; 
+            --text-muted: #6b7280;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --border: #e5e7eb;
+            --radius: 12px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Global Reset & Typography */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            padding: 2rem 1rem; 
+            max-width: 700px; 
+            margin: 0 auto; 
+            line-height: 1.5;
+        }
+
+        /* Headers */
+        h1 { text-align: center; color: var(--primary); font-size: 2.2rem; margin-bottom: 2rem; font-weight: 800; letter-spacing: -0.025em; }
+        h2 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-main); }
+        h3 { font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--text-main); }
+
+        /* Container Boxes */
+        .box { 
+            background: var(--surface); 
+            border: 1px solid var(--border); 
+            padding: 2rem; 
+            border-radius: var(--radius); 
+            margin-bottom: 1.5rem; 
+            box-shadow: var(--shadow-md); 
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Form Elements */
+        input, select { 
+            width: 100%; 
+            padding: 0.75rem 1rem; 
+            margin: 0.5rem 0 1.25rem 0; 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            font-size: 1rem;
+            color: var(--text-main);
+            background-color: #f9fafb;
+            transition: all 0.2s;
+            outline: none;
+        }
+        input:focus, select:focus {
+            border-color: var(--primary);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        /* Buttons */
+        button { 
+            width: 100%; 
+            padding: 0.75rem 1.5rem; 
+            background-color: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 0.75rem;
+        }
+        button:hover { background-color: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        button:active { transform: translateY(0); }
+        
+        button.secondary { background-color: var(--secondary); }
+        button.secondary:hover { background-color: var(--secondary-hover); }
+
+        .btn-danger { 
+            background-color: var(--danger); 
+            width: auto; 
+            padding: 0.5rem 1rem; 
+            font-size: 0.875rem; 
+            margin: 0;
+            box-shadow: none;
+        }
+        .btn-danger:hover { background-color: var(--danger-hover); box-shadow: var(--shadow-sm); }
+
+        /* Alert Messages */
+        #msgBox { 
+            padding: 1rem; 
+            border-radius: 8px; 
+            margin-bottom: 1.5rem; 
+            font-weight: 600; 
+            text-align: center; 
+            animation: slideDown 0.3s ease-out;
+        }
+        .error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+        .success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+
+        /* Task List */
+        ul { list-style: none; margin-top: 1rem; }
+        li { 
+            background: var(--surface); 
+            margin-bottom: 0.75rem; 
+            padding: 1.25rem; 
+            border-radius: 8px; 
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary); 
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        li:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-md);
+        }
+        li strong { display: block; font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.25rem; }
+        li small { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Layout Sections inside Dashboard */
+        .dashboard-section {
+            margin-top: 2rem; 
+            padding-top: 2rem; 
+            border-top: 1px solid var(--border);
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 Backend API Dashboard</h1>
+    
+    <div id="msgBox" class="hidden"></div>
+
+    <div id="authBox" class="box">
+        <h2>Login or Register</h2>
+        <input type="text" id="username" placeholder="Username (min 3 chars)">
+        <input type="password" id="password" placeholder="Password (min 6 chars)">
+        <select id="roleSelect" style="width: 100%; padding: 10px; margin: 8px 0;">
+            <option value="user">Standard User</option>
+            <option value="admin">Admin</option>
+        </select>
+        <button onclick="handleAuth('register')">Register</button>
+        <button onclick="handleAuth('login')" style="background-color: #475569;">Login</button>
+    </div>
+
+    <div id="dashboardBox" class="box hidden">
+        <div class="flex-between">
+            <h2>Your Dashboard</h2>
+            <button onclick="logout()" style="width: auto; background-color: #64748b;">Logout</button>
+        </div>
+        
+        <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            <h3>Create a New Task</h3>
+            <input type="text" id="taskTitle" placeholder="Task Title...">
+            <input type="text" id="taskDesc" placeholder="Task Description (Optional)...">
+            <button onclick="createTask()">+ Add Task</button>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <div class="flex-between">
+                <h3>Task List</h3>
+                <button onclick="fetchTasks()" style="width: auto;">Refresh</button>
+            </div>
+            <ul id="taskList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api/v1';
+        
+        // Show success/error messages
+        function showMessage(text, isError = false) {
+            const msgBox = document.getElementById('msgBox');
+            msgBox.textContent = text;
+            msgBox.className = isError ? 'error' : 'success';
+            msgBox.classList.remove('hidden');
+            setTimeout(() => msgBox.classList.add('hidden'), 4000);
+        }
+
+        // Handle Registration and Login
+        async function handleAuth(action) {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('roleSelect').value;
+
+            try {
+                const res = await fetch(`${API_URL}/auth/${action}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, role })
+                });
+                
+                const data = await res.json();
+                
+                if (!res.ok) throw new Error(data.message || (data.errors ? data.errors[0].msg : 'Error'));
+
+                if (action === 'register') {
+                    showMessage('Registration successful! You can now log in.');
+                } else if (action === 'login') {
+                    localStorage.setItem('token', data.token);
+                    document.getElementById('authBox').classList.add('hidden');
+                    document.getElementById('dashboardBox').classList.remove('hidden');
+                    showMessage('Logged in successfully!');
+                    fetchTasks();
+                }
+            } catch (err) {
+                showMessage(err.message, true);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            document.getElementById('authBox').classList.remove('hidden');
+            document.getElementById('dashboardBox').classList.add('hidden');
+            document.getElementById('taskList').innerHTML = '';
+            showMessage('Logged out successfully.');
+        }
+
+        // Fetch Tasks
+        async function fetchTasks() {
+            const token = localStorage.getItem('token');
+            if(!token) return logout();
+
+            try {
+                const res = await fetch(`${API_URL}/tasks`, { 
+                    headers: { 'Authorization': `Bearer ${token}` } 
+                });
+                const data = await res.json();
+                
+                const list = document.getElementById('taskList');
+                list.innerHTML = '';
+                
+                if(data.data && data.data.length > 0) {
+                    data.data.forEach(task => {
+                        list.innerHTML += `
+                            <li class="flex-between">
+                                <div>
+                                    <strong>${task.title}</strong><br>
+                                    <small>${task.description || 'No description'}</small>
+                                </div>
+                                <button class="btn-danger" onclick="deleteTask('${task._id}')">Delete</button>
+                            </li>
+                        `;
+                    });
+                } else {
+                    list.innerHTML = '<p>No tasks found.</p>';
+                }
+            } catch (err) {
+                showMessage('Failed to fetch tasks', true);
+            }
+        }
+
+        // Create Task
+        async function createTask() {
+            const token = localStorage.getItem('token');
+            const title = document.getElementById('taskTitle').value;
+            const description = document.getElementById('taskDesc').value;
+
+            if(!title) return showMessage('Task title is required', true);
+
+            try {
+                const res = await fetch(`${API_URL}/tasks`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json', 
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify({ title, description })
+                });
+                
+                if(!res.ok) throw new Error('Failed to create task');
+                
+                document.getElementById('taskTitle').value = '';
+                document.getElementById('taskDesc').value = '';
+                showMessage('Task created successfully!');
+                fetchTasks();
+            } catch (err) {
+                showMessage(err.message, true);
+            }
+        }
+
+        // Delete Task
+        async function deleteTask(id) {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`${API_URL}/tasks/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if(!res.ok) throw new Error('Failed to delete task');
+                
+                showMessage('Task deleted!');
+                fetchTasks();
+            } catch (err) {
+                showMessage(err.message, true);
+            }
+        }
+
+        // Check if already logged in on page load
+        if(localStorage.getItem('token')) {
+            document.getElementById('authBox').classList.add('hidden');
+            document.getElementById('dashboardBox').classList.remove('hidden');
+            fetchTasks();
+        }
+    </script>
+</body>
+</html>
